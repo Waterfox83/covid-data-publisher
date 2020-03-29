@@ -1,0 +1,89 @@
+buildscript {
+  dependencies {
+    classpath "org.springframework.boot:spring-boot-gradle-plugin:2.1.6.RELEASE"
+  }
+}
+
+// ****************************************************************************
+
+plugins {
+  id "com.google.cloud.tools.jib" version "1.4.0"
+}
+
+apply plugin: 'java'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+//apply plugin: 'com.jda.java-testing'
+//apply plugin: 'com.jda.java-quality-checks'
+apply plugin: 'idea'
+
+idea {
+  module {
+    testSourceDirs += file('src/integrationTest/java')
+    testSourceDirs += file('src/integrationTest/resources')
+  }
+}
+
+// ****************************************************************************
+
+group 'covid-data-publisher-service'
+version '1.0'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+  mavenCentral()
+  jcenter()
+}
+
+// ****************************************************************************
+
+dependencies {
+  compile 'org.springframework.boot:spring-boot-starter-web'
+  compile 'org.springframework.boot:spring-boot-starter-data-jpa'
+  compile 'org.springframework.boot:spring-boot-starter-webflux'
+  compile 'com.google.code.gson:gson:2.8.5'
+  
+  compile 'org.projectreactor:reactor-spring:1.0.1.RELEASE'
+  
+  compile 'com.h2database:h2'
+  compile group: 'org.postgresql', name: 'postgresql', version: '42.2.1'
+  compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
+  compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.12'
+  compile group: 'com.google.guava', name: 'guava', version: '28.0-jre'
+  compile group: 'com.vladmihalcea', name: 'hibernate-types-52', version: '2.5.0'
+  compile group: 'org.hibernate', name: 'hibernate-ehcache', version: '5.3.10.Final'
+  compile group: 'org.springframework.kafka', name: 'spring-kafka', version: '2.2.4.RELEASE'
+  compile group: 'org.projectlombok', name: 'lombok', version: '1.18.8'
+
+  compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+  compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+
+  testCompile 'com.h2database:h2:1.4.194'
+  testCompile 'org.springframework.boot:spring-boot-starter-test'
+  testCompile 'org.springframework.kafka:spring-kafka-test'
+  testCompile group: 'junit', name: 'junit', version: '4.12'
+  testCompile group: 'org.unitils', name: 'unitils-core', version: '3.4.6'
+  testCompile group: 'org.skyscreamer', name: 'jsonassert', version: '1.5.0'
+}
+
+// ****************************************************************************
+
+jar {
+  archivesBaseName = rootProject.name
+  project.version = ""
+}
+
+// ****************************************************************************
+jib.to.image = 'waterfox83/covid-data-publisher'
+//tasks.build.dependsOn tasks.jib
+
+test {
+  environment "EventHubsKey", "sample_key"
+}
+
+bootRun {
+  args = ["--spring.profiles.active=local"]
+}
+// ****************************************************************************

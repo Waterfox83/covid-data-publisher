@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: covid-data-publisher-deployment
+spec:
+  selector:
+    matchLabels:
+      app: covid-data-publisher
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: covid-data-publisher
+    spec:
+      containers:
+        - name: covid-data-publisher
+          image: waterfox83/covid-data-publisher:latest
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 8080
+---
+# The service (LoadBalancer type) which can be used to access the above running container.
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: covid-data-publisher-svc
+  labels:
+    app: covid-data-publisher
+spec:
+  type: LoadBalancer
+  selector:
+    app: covid-data-publisher
+  ports:
+    - nodePort: 30002
+      port: 8080
+      targetPort: 8080
