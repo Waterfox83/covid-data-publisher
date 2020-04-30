@@ -1,0 +1,12 @@
+apiVersion: skaffold/v1
+kind: Config
+metadata:
+  name: covid-data-source-service
+build:
+  artifacts:
+  - image: waterfox83/covid-data-source-service
+    context: deploy
+deploy:
+  kubectl:
+    manifests:
+    - deploy/data-publisher-httpdeploy.yaml
