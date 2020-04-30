@@ -1,4 +1,4 @@
-# covid-data-publisher
+# covid-data-source-service
 
 ## Build
  Run `./gradlew clean check`
@@ -18,7 +18,7 @@
  
  Run `docker load --input build/jib-image.tar`
  
- Run `docker run -p 8080:8080 waterfox83/covid-data-publisher`
+ Run `docker run -p 8080:8080 waterfox83/covid-data-source-service`
  
 
 ## Deploying to Kubernetes Cluster
@@ -28,6 +28,6 @@ For running on AKS, we should create and push the image to ACR. Here we are push
 We need to create the image first though, run `./gradlew jibBuildTar` and `docker load --input build/jib-image.tar` 
 to create and load the image. 
  
-Push it to docker hub: `docker push waterfox83/covid-data-publisher:latest`
+Push it to docker hub: `docker push waterfox83/covid-data-source-service:latest`
 
 Deploy the image on Kubernetes: `kubectl apply -f deploy/data-publisher-httpdeploy.yaml`

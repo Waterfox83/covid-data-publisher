@@ -26,7 +26,7 @@ idea {
 
 // ****************************************************************************
 
-group 'covid-data-publisher-service'
+group 'covid-data-source-service'
 version '1.0'
 
 sourceCompatibility = 1.8
@@ -76,7 +76,7 @@ jar {
 }
 
 // ****************************************************************************
-jib.to.image = 'waterfox83/covid-data-publisher'
+jib.to.image = 'waterfox83/covid-data-source-service'
 //tasks.build.dependsOn tasks.jib
 
 test {

@@ -3,4 +3,4 @@ pluginManagement {
 		gradlePluginPortal()
 	}
 }
-rootProject.name = 'covid-data-publisher'
+rootProject.name = 'covid-data-source-service'
