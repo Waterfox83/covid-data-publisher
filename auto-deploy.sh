@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+if [ -z "$DOCKER_PASSWORD" ]; then
+  echo "Error: DOCKER_PASSWORD environment variable is not set."
+  exit 1
+fi
+
 echo " ++++++++++++ Starting Gradle build  +++++++++++++ "
 
 gradle clean build
@@ -18,7 +23,7 @@ docker load --input build/jib-image.tar
 
 echo " ++++++++++++ Logging into ACR  ++++++++++++ "
 
-docker login -u waterfox83 -p Abhishek123*
+docker login -u waterfox83 -p "$DOCKER_PASSWORD"
 
 echo " ++++++++++++ Pushing new docker image to ACR  ++++++++++++ "
 
