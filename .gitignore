@@ -30,3 +30,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+# Local application properties
+application-local.properties
